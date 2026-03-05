@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-imagem = cv2.imread('./Imagens/cores.png')
+imagem = cv2.imread('./Aula 04-03/Imagens/cores.png')
 
 print(imagem.shape)
 

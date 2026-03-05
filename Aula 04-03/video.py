@@ -1,7 +1,7 @@
 import cv2
 
 cap = cv2.VideoCapture(0)
-#cap = cv2.VideoCapture('./Video/objetos-coloridos.mov')
+#cap = cv2.VideoCapture('./Aula 04-03/Video/objetos-coloridos.mov')
 
 
 

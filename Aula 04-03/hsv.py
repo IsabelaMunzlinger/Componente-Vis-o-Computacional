@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 
-frutas = cv2.imread('./Imagens/frutas.png')
-frutas_escuras = cv2.imread('./Imagens/frutas_escuras.png')
-frutas_claras = cv2.imread('./Imagens/frutas_claras.png')
+frutas = cv2.imread('./Aula 04-03/Imagens/frutas.png')
+frutas_escuras = cv2.imread('./Aula 04-03/Imagens/frutas_escuras.png')
+frutas_claras = cv2.imread('./Aula 04-03/Imagens/frutas_claras.png')
 
 hsvFrutas = cv2.cvtColor(frutas, cv2.COLOR_BGR2HSV) #converte de rgb para hsv
 hsvFrutasEscuras = cv2.cvtColor(frutas_escuras, cv2.COLOR_BGR2HSV)
