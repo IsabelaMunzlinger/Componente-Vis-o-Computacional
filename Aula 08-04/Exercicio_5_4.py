@@ -10,11 +10,14 @@ imgCannySemFiltro = cv2.Canny(img, 100, 200)
 
 imgTratadaGaussiano = cv2.GaussianBlur(img, (5,5), 0) 
 
+imgTratadaMediana = cv2.medianBlur(img, 3)
+
 imgCanny = cv2.Canny(imgTratadaGaussiano, 100, 200)
 
 cv2.imshow('Original', img)
 cv2.imshow('Canny sem filtro', imgCannySemFiltro)
-cv2.imshow('Tratada', imgTratadaGaussiano)
+cv2.imshow('Tratada Gaussiana', imgTratadaGaussiano)
+cv2.imshow('Tratada Mediana', imgTratadaMediana)
 cv2.imshow('Canny', imgCanny)
 
 cv2.waitKey(0)
