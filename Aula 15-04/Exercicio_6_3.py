@@ -13,17 +13,23 @@ clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 imgClahe = clahe.apply(imgGray)
 
 # Suavização para reduzir ruído
-imgBlur = cv2.GaussianBlur(imgClahe, (5, 5), 0)
+imgBlur = cv2.GaussianBlur(imgClahe, (9, 9), 0)
 
 #Processamento
-elementoEstruturante = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
+# Usa elemento estruturante menor para preservar detalhes finos
+elementoEstruturante = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
 imgTopHat = cv2.morphologyEx(imgBlur, cv2.MORPH_TOPHAT, elementoEstruturante)
 
-# Combina o resultado top-hat com a imagem borrada para reforçar as cristas
-imgProcessada = cv2.addWeighted(imgBlur, 1.0, imgTopHat, 1.0, 0)
+# Inverte e aplica threshold para melhor segmentação
+imgProcessada = cv2.addWeighted(imgBlur, 0.8, imgTopHat, 0.5, 0)
 
 #Segmentação usando threshold de Otsu
-ret, imgSegmentada = cv2.threshold(imgProcessada, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+ret, imgSegmentada = cv2.threshold(imgProcessada, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+# Limpeza morfológica para remover ruído e preencher pequenos buracos
+elementoLimpeza = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+imgSegmentada = cv2.morphologyEx(imgSegmentada, cv2.MORPH_CLOSE, elementoLimpeza, iterations=2)
+imgSegmentada = cv2.morphologyEx(imgSegmentada, cv2.MORPH_OPEN, elementoLimpeza, iterations=1)
 
 cv2.imshow("Original", img)
 cv2.imshow("Cinza CLAHE", imgClahe)
