@@ -2,6 +2,7 @@
 # para restaurar a imagem fingerprint.jpg.
 
 import cv2
+import numpy as np
 
 img = cv2.imread("./imagens/fingerprint.jpg")
 
@@ -12,28 +13,23 @@ imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 imgClahe = clahe.apply(imgGray)
 
-# Suavização para reduzir ruído
-imgBlur = cv2.GaussianBlur(imgClahe, (9, 9), 0)
+#Equalização de histograma
+imagem_eq = cv2.equalizeHist(imgClahe)
 
-#Processamento
-# Usa elemento estruturante menor para preservar detalhes finos
-elementoEstruturante = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-imgTopHat = cv2.morphologyEx(imgBlur, cv2.MORPH_TOPHAT, elementoEstruturante)
+cv2.imshow("Equalizada", imagem_eq)
 
 # Inverte e aplica threshold para melhor segmentação
-imgProcessada = cv2.addWeighted(imgBlur, 0.8, imgTopHat, 0.5, 0)
+imgProcessada = cv2.addWeighted(imgClahe, 0.8, imgClahe, 0.5, 0)
 
-#Segmentação usando threshold de Otsu
-ret, imgSegmentada = cv2.threshold(imgProcessada, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+imgFiltrada = cv2.Laplacian(imgGray, cv2.CV_8U)
+imgFiltrada2 = cv2.Laplacian(imgProcessada, cv2.CV_8U)
 
-# Limpeza morfológica para remover ruído e preencher pequenos buracos
-elementoLimpeza = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-imgSegmentada = cv2.morphologyEx(imgSegmentada, cv2.MORPH_CLOSE, elementoLimpeza, iterations=2)
-imgSegmentada = cv2.morphologyEx(imgSegmentada, cv2.MORPH_OPEN, elementoLimpeza, iterations=1)
+imgFinal = cv2.add(imgFiltrada, imgFiltrada2)
 
 cv2.imshow("Original", img)
 cv2.imshow("Cinza CLAHE", imgClahe)
 cv2.imshow("Processada", imgProcessada)
-cv2.imshow("Segmentada", imgSegmentada)
+cv2.imshow("Contornada", imgFiltrada)
+cv2.imshow("Soma", imgFinal)
 cv2.waitKey(0)
 cv2.destroyAllWindows
