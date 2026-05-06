@@ -6,7 +6,7 @@ imagem = cv2.imread("./imagens/tampinhas1.png")
 imagemCinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
 
 #Binarização
-_, imgBinarizada = cv2.threshold(imagemCinza, 200, 255, cv2.THRESH_BINARY_INV)
+_, imgBinarizada = cv2.threshold(imagemCinza, 200, 255, cv2.THRESH_BINARY_INV)#inv usa quando o fundo é branco e o objeto é preto, ou seja, a tampinha é preta e o fundo é branco
 
 
 num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(imgBinarizada)

@@ -14,6 +14,7 @@ plt.title("Histograma")
 plt.legend()
 
 print(cv2.THRESH_OTSU)
+
 print("Valor de ret: ", ret)
 
 cv2.imshow("Imagem original", imgOriginal)
